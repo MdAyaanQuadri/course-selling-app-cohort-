@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const jwt_secret = "sjdhbsjhvbjhbev";
+require("dotenv").config();
+const jwt_secret = process.env.jwt_secret ;
 const database  = require("./db")
 const userModel = database.userModel;
  function  auth(req,res,next){

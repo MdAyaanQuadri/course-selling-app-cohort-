@@ -6,9 +6,7 @@ const jwt = require("jsonwebtoken");
 const { userModel, courseBoughtModel, courseModel } = require("./db");
 const {auth , jwt_secret} = require("./auth");
 const {admin} = require("./adminCheck");
-mongoose.connect(
-  "mongodb+srv://admin:0Hnlgw4l7VUA3zjg@cluster0.rfr5qhg.mongodb.net/courseSelling"
-);
+mongoose.connect(process.env.mongo_url);
 const app = express();
 app.use(express.json());
 app.post("/api/signup", async (req, res) => {
@@ -107,6 +105,6 @@ app.post("/api/signin", async (req,res) =>{
     })
 });
 app.use(auth);
-app.listen(3000, () => {
+app.listen(process.env.port, () => {
   console.log("server started ...............................");
 });
