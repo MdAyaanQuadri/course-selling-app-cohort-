@@ -1,4 +1,7 @@
+
 const mongoose = require("mongoose");
+
+mongoose.connect(process.env.mongo_url);
 const ObjectId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema;
 const user = new Schema({

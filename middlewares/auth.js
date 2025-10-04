@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const jwt_secret = process.env.jwt_secret ;
-const database  = require("./db")
+const jwt_secretUser = process.env.jwt_secretUser ;
+const database  = require("../config/db")
 const userModel = database.userModel;
  function  auth(req,res,next){
     const token = req.headers.authorization;
@@ -34,5 +33,5 @@ const userModel = database.userModel;
 } 
 module.exports = {
     auth,
-    jwt_secret
+    jwt_secretUser
 }
