@@ -4,7 +4,7 @@ const database  = require("../config/db")
 const userModel = database.userModel;
  function  auth(req,res,next){
     const token = req.headers.authorization;
-     jwt.verify(token, jwt_secret, async (err, decode) => {
+     jwt.verify(token, jwt_secretUser, async (err, decode) => {
        if (err) {
          return res.status(401).json({
            message: "redirect to signin page",
