@@ -98,6 +98,12 @@ userRouter.post("/signin", async (req, res) => {
     token,
   });
 });
+userRouter.get("/courses" , async (req,res)=>{
+
+});
+userRouter.post("/purchase/course/:id" ,(req,res)=>{
+
+})
 module.exports = {
     userRouter
 }
