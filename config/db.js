@@ -1,5 +1,6 @@
 
 const mongoose = require("mongoose");
+const { string } = require("zod");
 
 mongoose.connect(process.env.mongo_url);
 const ObjectId = mongoose.Types.ObjectId;
@@ -23,9 +24,9 @@ const user = new Schema({
   },
 });
 const video = new Schema({
+  courseId:ObjectId,
   videoTitle: String,
   videoPath: String,
-  thumbnailPath: String,
   createdAt: {
     type: Date,
     default: Date.now,
@@ -36,9 +37,8 @@ const course = new Schema({
   price: Number,
   instructor: String,
   courseDescription: String,
-  content: [video],
-  // videoPath:String
-  // ,thumbnailPath:String
+  createdby:ObjectId,
+  courseThumbnail:String,
   createdAt: {
     type: Date,
     default: Date.now,
@@ -60,10 +60,12 @@ const courseBought = new Schema({
 const userModel = mongoose.model("users", user);
 const courseBoughtModel = mongoose.model("coursesBought", courseBought);
 const courseModel = mongoose.model("courses", course);
+const videoModel = mongoose.model("videos",video);
 module.exports = {
   userModel,
   courseModel,
   courseBoughtModel,
+  videoModel,
 };
   
 

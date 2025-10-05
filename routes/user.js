@@ -44,14 +44,14 @@ userRouter.post("/signup", async (req, res) => {
       message: "server error",
     });
   }
-  let response;
+  let userModelResponse;
   try {
-    response = await userModel.create({
+    userModelResponse = await userModel.create({
       email: data.email,
       name: data.name,
       password: hashedpassword,
     });
-    if (!response) {
+    if (!userModelResponse) {
       return res.status(403).json({
         message: "uncaught error with db",
       });
@@ -62,7 +62,7 @@ userRouter.post("/signup", async (req, res) => {
       message: "email already exists",
     });
   }
-  const token = jwt.sign({ _id: response._id.toString() }, jwt_secretUser);
+  const token = jwt.sign({ _id: userModelResponse._id.toString() }, jwt_secretUser);
   res.status(201).json({
     message: "signup successfull",
     token,
@@ -70,12 +70,12 @@ userRouter.post("/signup", async (req, res) => {
 });
 userRouter.post("/signin", async (req, res) => {
   const { email, password } = req.body;
-  let dbResponse;
+  let userModelResponse;
   try {
-    dbResponse = await userModel.findOne({
+    userModelResponse = await userModel.findOne({
       email,
     });
-    if (!dbResponse) {
+    if (!userModelResponse) {
       return res.status(400).json({
         message: "user doesnot exist or  wrong email",
       });
@@ -86,13 +86,13 @@ userRouter.post("/signin", async (req, res) => {
       message: "uncaught server error",
     });
   }
-  const passwordResponse = await bcrypt.compare(password, dbResponse.password);
+  const passwordResponse = await bcrypt.compare(password, userModelResponse.password);
   if (!passwordResponse) {
     return res.json({
       message: "wrong password",
     });
   }
-  const token = await jwt.sign({ _id: dbResponse._id }, jwt_secretUser);
+  const token = await jwt.sign({ _id: userModelResponse._id }, jwt_secretUser);
   res.status(200).json({
     message: "signedup successful",
     token,
