@@ -77,7 +77,6 @@ adminRouter.post("/courses/add-courses",async(req,res)=>{
     courseModelResponse
    })
 })
-
 adminRouter.post("/courses/add-video/:courseId",async(req,res)=>{
         
         const courseId = req.params.courseId;
@@ -126,6 +125,7 @@ adminRouter.post("/courses/add-video/:courseId",async(req,res)=>{
                 videoModelResponse
             })
 })
+
 module.exports={
     adminRouter
 }

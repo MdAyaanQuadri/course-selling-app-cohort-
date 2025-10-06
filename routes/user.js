@@ -98,13 +98,47 @@ userRouter.post("/signin", async (req, res) => {
     token,
   });
 });
+userRouter.use(auth);
 userRouter.get("/courses" , async (req,res)=>{
-  
-
+  let courseModelResponse;
+    try { courseModelResponse  = await courseModel.find();
+    if(!courseModelResponse){
+      return res.status(400).json({
+        message:"there are no courses available"
+      })
+    }
+    return res.status(200).json({
+      message:"Courses found",
+      courseModelResponse,
+    });
+    }catch(error){
+      console.log(error.message);
+      return res.status(500).json({
+        message:"unexpected server error"
+      })
+    }
 });
-userRouter.post("/purchase/course/:id" ,(req,res)=>{
-
+userRouter.get("/course/:courseId" ,async (req,res)=>{
+        // const userId =  req._id;
+        const  courseId = req.params.courseId;
+        try {const courseModelResponse = await courseModel.findById(courseId);
+        if(!courseModelResponse){
+          return res.status(404).json({
+            message:"no courses found"
+          })
+        }
+        }catch(error){
+          console.log(error.message);
+          return res.status(500).json({
+            message: "unexpected server error",
+          });
+        }
+        return res.status(200).json({
+          message:"found",
+          courseModelResponse
+        })
 })
+
 module.exports = {
     userRouter
 }
