@@ -24,12 +24,16 @@ const user = new Schema({
   },
 });
 const video = new Schema({
-  courseId:ObjectId,
+  courseId: ObjectId,
   videoTitle: String,
   videoPath: String,
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  serialNo: {
+    type: Number,
+    // default: 0,
   },
 });
 const course = new Schema({
@@ -37,11 +41,15 @@ const course = new Schema({
   price: Number,
   instructor: String,
   courseDescription: String,
-  createdby:ObjectId,
-  courseThumbnail:String,
+  adminId: ObjectId,
+  courseThumbnail: String,
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  serialNo: {
+    type: Number,
+    // default:0
   },
 });
 const courseBought = new Schema({

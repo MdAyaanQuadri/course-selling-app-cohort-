@@ -47,14 +47,19 @@ adminRouter.post("/courses/add-courses",async(req,res)=>{
     const adminId = req._id
     const {name,price,instructor,courseDescription,courseThumbnail} = req.body;
     let courseModelResponse;
+    const count = await courseModel.countDocuments({
+      adminId
+    });
+    const incCount  = count + 1;
     try{
      courseModelResponse = await courseModel.create({
       name,
       price,
       instructor,
-      createdby:adminId,
+      adminId,
       courseDescription,
       courseThumbnail,
+      serialNo:incCount
     });
     if(!courseModelResponse){
          return res.status(400).json({
@@ -74,7 +79,12 @@ adminRouter.post("/courses/add-courses",async(req,res)=>{
 })
 
 adminRouter.post("/courses/add-video/:courseId",async(req,res)=>{
+        
         const courseId = req.params.courseId;
+        const count = await videoModel.countDocuments({
+          courseId,
+        });
+        const incCount = count + 1;
         const {videoTitle,videoPath} = req.body;
         let courseModelResponse;
         try {
@@ -97,7 +107,8 @@ adminRouter.post("/courses/add-video/:courseId",async(req,res)=>{
             videoModelResponse = await videoModel.create({
                 courseId,
                 videoPath,
-                videoTitle
+                videoTitle,
+                serialNo:incCount
             });
             if(!videoModelResponse){
                 return res.status(400).json({
