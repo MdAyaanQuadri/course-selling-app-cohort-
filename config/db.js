@@ -56,9 +56,9 @@ const courseBought = new Schema({
   userId: ObjectId,
   cousrseId: ObjectId,
   name: String,
-  price: Number,
+  // price: Number,
   instructor: String,
-  courseDescription: String,
+  // courseDescription: String,
   thumbnailPath: String,
   boughtAt: {
     type: Date,

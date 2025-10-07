@@ -118,10 +118,11 @@ userRouter.get("/courses" , async (req,res)=>{
       })
     }
 });
-userRouter.get("/course/:courseId" ,async (req,res)=>{
+userRouter.get("/courses/:courseId" ,async (req,res)=>{
         // const userId =  req._id;
         const  courseId = req.params.courseId;
-        try {const courseModelResponse = await courseModel.findById(courseId);
+        let courseModelResponse;
+        try { courseModelResponse = await courseModel.findById(courseId);
         if(!courseModelResponse){
           return res.status(404).json({
             message:"no courses found"
@@ -138,7 +139,67 @@ userRouter.get("/course/:courseId" ,async (req,res)=>{
           courseModelResponse
         })
 })
+userRouter.post("/courses/purchase/:courseId", async (req,res) =>{
+  const userId =  req._id;
+  let {price} = req.body;
+  const courseId = req.params.courseId;
+  console.log(courseId);
+  let courseModelResponse;
+  try {
+    courseModelResponse = await courseModel.find({
+      _id:courseId
+    });
+    if (!courseModelResponse) {
+      return res.status(404).json({
+        message: "no courses found",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: "unexpected server error",
+    });
+  }
+  price = Number(price);
+  console.log(typeof price);
+  console.log( price);
+  console.log(typeof courseModelResponse);
+    console.log(courseModelResponse[0].price);
 
+  console.log(Number(courseModelResponse[0].price));
+
+  console.log( courseModelResponse);
+  if(price != courseModelResponse[0].price){
+    return res.status(400).json({
+      message:"plz enter the exact amount needed to but that course"
+    })
+  }
+  let courseBoughtModelResponse ;
+  try {
+    courseBoughtModelResponse = await courseBoughtModel.create({
+      userId,
+      courseId,
+      name: courseModelResponse.name,
+      // courseDesription:courseModelResponse.courseDescription,
+      thumbnailPath: courseModelResponse.thumbnailPath,
+      instructor: courseModelResponse.instructor,
+    });
+    if (!courseBoughtModelResponse) {
+      return res.status(404).json({
+        message: "error in creation",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: "unexpected server error in course bought",
+    });
+  }
+  return res.status(200).json({
+    message: "course bought succesfully",
+    courseBoughtModelResponse,
+  }); 
+ })
 module.exports = {
     userRouter
 }
