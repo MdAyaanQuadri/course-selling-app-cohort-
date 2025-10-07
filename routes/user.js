@@ -146,7 +146,7 @@ userRouter.post("/courses/purchase/:courseId", async (req,res) =>{
   console.log(courseId);
   let courseModelResponse;
   try {
-    courseModelResponse = await courseModel.find({
+    courseModelResponse = await courseModel.findOne({
       _id:courseId
     });
     if (!courseModelResponse) {
@@ -160,16 +160,7 @@ userRouter.post("/courses/purchase/:courseId", async (req,res) =>{
       message: "unexpected server error",
     });
   }
-  price = Number(price);
-  console.log(typeof price);
-  console.log( price);
-  console.log(typeof courseModelResponse);
-    console.log(courseModelResponse[0].price);
-
-  console.log(Number(courseModelResponse[0].price));
-
-  console.log( courseModelResponse);
-  if(price != courseModelResponse[0].price){
+  if(price != courseModelResponse.price){
     return res.status(400).json({
       message:"plz enter the exact amount needed to but that course"
     })
